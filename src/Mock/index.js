@@ -1,0 +1,51 @@
+import Mock from 'mockjs'
+
+//树形菜单数据模拟
+const treeData = Mock.mock('http://localhost:8080/static/mockData/tree',{
+    'tree|5-10':[
+        {
+            'label':'第一级',
+            'children|2-5':[
+                {
+                    'label':'第二级',
+                    'children|2-5':[
+                        {
+                            'label':'第三级', 
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+})
+//表格模拟数据
+const tableData = Mock.mock('http://localhost:8080/static/mockData/table',{
+    'titles|1-1':[
+        {
+            'prop':'name',
+            'label':'员工姓名'
+        },{
+            'prop':'date',
+            'label':'入职时间',
+            'sortable':'1'
+        },{
+            'prop':'branch',
+            'label':'部门'
+        },{
+            'prop':'position',
+            'label':'职位'
+        },{
+            'prop':'role',
+            'label':'角色'
+        }
+    ],
+    'list|30-400':[
+        {
+            'name|1':['张三','李四','王五','马六'],
+            'branch|1':['安卓','IOS','前端','UI'],
+            'date|1':['2017-01-09','2018-04-19','2016-11-13','2008-07-21','2012-08-12'],
+            'position|1':['p1','p2','p3','p4'],
+            'role|1':['管理员','普通浏览用户','公司领导']
+        }
+    ]
+})

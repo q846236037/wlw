@@ -6,6 +6,7 @@ let HTTP= axios.create({
     responseType:'json',
     withCredentials: true,
 })
+
 export default {
     login(params){
         return HTTP.get('login_corp',{
@@ -16,6 +17,5 @@ export default {
         return HTTP.get('corp', {
           params
         })
-
     }
 }

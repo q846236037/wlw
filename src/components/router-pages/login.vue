@@ -40,7 +40,7 @@
                         window.sessionStorage.loginState = 1;
                         this.commitUserInfo(res.data)
                         this.$router.push({
-                            name:'admin',
+                            name:'add-customer',
                             params:{
                                 ...res.data
                             }

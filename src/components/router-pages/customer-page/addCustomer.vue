@@ -130,7 +130,26 @@ export default {
       this.tableData.list.splice(index, 1);
     },
     showModel(){
-      this.isShow = true;
+      Api.formCorp().then(res=>{
+        console.log(res);
+        this.modelData=res.data.body;
+        console.log(this.modelData,"modelData");
+        this.modelData.formData.forEach(element => {
+          if(element.item!=null){
+            let item=element.item.substring(1,element.item.length-1);
+            let array=item.split(";");
+            let jsonArray=array.map(i=>{
+               return eval('('+i+')');
+            })
+            element.item=jsonArray;
+          }else{
+            element.item=[];
+          }
+        });
+        console.log(this.modelData.formData,"formData");
+        this.isShow = true;
+      })
+      
     },
     handleOk(param) {
       this.isShow = false;

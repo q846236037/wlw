@@ -17,5 +17,10 @@ export default {
         return HTTP.get('corp', {
           params
         })
+    },
+    formCorp(params){
+        return HTTP.get('form/1',{
+            params
+        })
     }
 }

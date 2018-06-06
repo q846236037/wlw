@@ -16,7 +16,10 @@ export default {
   name: "addCustomer",
   data() {
     return {
-      tableData: null,
+      tableData:{
+        titles:[],
+        list:[],
+      },
       isShow: false,
       modelData: {
         title: "后台定制模态框",
@@ -105,7 +108,22 @@ export default {
     get_table_data() {
      Api.selectCorp().then(res => {
         console.log(res,"addCustomer");
-        this.tableData = res.data;
+        this.tableData.titles=[{
+            "prop":"name",
+            "label":"客户名称"
+        },{
+            "prop":"date",
+            "sortable":"1",
+            "label":"签约时间"
+        },{
+            "prop":"address",
+            "label":"地区"
+        },{
+            "prop":"person",
+            "label":"联系人"
+        }];
+        this.tableData.list=res.data.body;
+
       });
     },
     removeTabNode(index) {

@@ -5,16 +5,16 @@
             <el-submenu v-if="subitem.children&&subitem.children.length>0" :index="(index+1).toString()">
                 <template slot="title">
                     <i class="el-icon-menu"></i>
-                    <span @click.stop="link(subitem.component_id)">{{subitem.name}}</span>
+                    <span @click.stop="link(subitem.name)">{{subitem.title}}</span>
                 </template>
                 <el-menu-item v-for="(item,i) in subitem.children" @click="link(item.name,item.id)" :key="i" :index="(index+1)+'-'+(i+1)">
-                    <span slot="title">{{item.name}}</span>
+                    <span slot="title">{{item.title}}</span>
                 </el-menu-item>
             </el-submenu>
-            <el-menu-item v-else @click="link(subitem.component_id)" :index="(index+1).toString()">
+            <el-menu-item v-else @click="link(subitem.name)" :index="(index+1).toString()">
                <template slot="title">
                     <i class="el-icon-menu"></i>
-                    <span>{{subitem.name}}</span>
+                    <span>{{subitem.title}}</span>
                 </template>
             </el-menu-item>
         </div>
@@ -29,8 +29,6 @@ export default {
   },
   methods:{
       link(name,id){
-        if(name==0)
-            name="add-customer"
         this.$router.push({name,params:{id}})    
       }
   }

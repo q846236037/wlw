@@ -2,7 +2,7 @@
 <!-- 组织管理 -->
     <el-container class="tag">
          <el-aside width="220px">
-            <tree-menu :tree-data="custemor.treeList"></tree-menu>
+            <tree-menu :set-tree="custemor.treeList"  @add-node-top="addTopHandle" @add-node="addHandle" @edit-pass="editHandle" @del-node="delHandle" @handle-click="clickFn"></tree-menu>
         </el-aside>
         <el-main>
             <div class="manage-header">
@@ -24,18 +24,39 @@ export default {
   name: "orgManage",
   data() {
     return {
-      tableData: null
+      tableData:{
+        titles:"",
+        list:[],
+      }
     };
   },
   computed: {
-    ...mapState(["custemor"])
+    ...mapState(["userInfo","custemor"])
   },
   methods: {
     ...mapActions(["dph_tree"]),
     get_table_data() {
-      Api.get("/mockData/table").then(res => {
-        this.tableData = res.data;
-      });
+      // Api.get("/mockData/table").then(res => {
+      //   this.tableData = res.data;
+      // });
+        Api.tableDate(this.userInfo.body.employee.corp_id).then(res=>{
+          this.tableData.titles=[{
+                    'prop':'name',
+                    'label':'员工姓名'          
+                },{
+                    'prop':'date',
+                    'label':'入职时间',
+                    'sortable':'1'
+                },{
+                    'prop':'branch',
+                    'label':'部门'
+                },{
+                    'prop':'position',
+                    'label':'职位'
+                }];
+          this.tableData.list=res.data.body;
+        })
+
     },
     removeTabNode(index, row) {  //移除表格行回调函数
       new Promise((resolv, reject) => {
@@ -68,7 +89,69 @@ export default {
     editTabNode(index, row) {   //修改表格行回调函数
       //console.log(index, row);
       //this.tableData.list.splice(index, 1);
-    }
+    },
+    addTopHandle(resovle){
+       setTimeout(() => {
+        resovle({
+              id: 12,
+              name: '新增顶级节点',
+              pid: "",
+              isEdit: false,
+              children: []
+            })
+      }, 1000)
+    },
+    addHandle(param,resovle){
+      console.log('addHandle', param)
+      setTimeout(() => {
+        resovle({
+              id: 12,
+              name: '新增节点',
+              pid: 37,
+              isEdit: false,
+              children: []
+            })
+      }, 1000)
+    },
+    delHandle(param,resovle){
+      console.log('tag', param)
+      Api.deleteDept(this.userInfo.body.employee.corp_id,param.id).then(res=>{
+        if(res.data.ret==1){
+          console.log(res);
+          resovle()
+        }
+      })
+    },
+    editHandle(param,resolve){
+      console.log('edit',param)
+      let params={
+        corp_id:this.userInfo.body.employee.corp_id,
+        id:param.id,
+        name:param.name
+      }
+      console.log(params,"params");
+      Api.updateDept(params).then(res=>{
+        console.log(res);
+        if(res.data.ret!=1){
+          resolve();
+        }
+      })
+      // setTimeout(() => {
+      //   resolve()
+      // }, 1000)
+    },
+     clickFn(param){
+       console.log('p>',param)
+       if(param.pid==0){
+         Api.tableDate(this.userInfo.body.employee.corp_id).then(res=>{
+           this.tableData.list=res.data.body;
+         })
+       }
+       Api.tableCorpDept(this.userInfo.body.employee.corp_id,param.id).then(res=>{
+         console.log(res,"rp");
+        this.tableData.list=res.data.body;
+       })
+    },
   },
   watch: {
     tableData: {
@@ -81,6 +164,7 @@ export default {
   },
   created() {
     this.get_table_data();
+    
     //if (this.custemor.treeList.length == 0) {
       this.dph_tree();
    // }

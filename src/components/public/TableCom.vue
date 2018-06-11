@@ -44,7 +44,7 @@
 export default {
   name: "TableCom",
   props: {
-    tableData: null, //渲染表格所需数据
+    tableData:"", //渲染表格所需数据
     isEdit: {
       //是否可编辑
       type: Boolean,
@@ -55,6 +55,9 @@ export default {
       type: Boolean,
       default: true
     }
+  },
+  created () {
+    console.log(this.tableData,"tabledata");
   },
   data() {
     return {
@@ -68,7 +71,12 @@ export default {
     },
     list() {
       let n = 20; //每页显示20条
-      return this.tableData.list.filter((item, index) => {
+      console.log(this.tableData,"list");
+      var datalist = this.tableData.list;
+      console.log(typeof(datalist),'typeof...')
+      console.log(datalist);
+
+      return datalist.filter((item, index) => {
         return index >= (this.page - 1) * n && index < n + n * (this.page - 1);
       });
     }

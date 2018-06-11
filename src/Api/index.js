@@ -22,5 +22,22 @@ export default {
         return HTTP.get('form/1',{
             params
         })
+    },
+    treeList(params){
+        return HTTP.get('corp/'+params+'/dept')
+    },
+    tableDate(params){
+        return HTTP.get('corp/'+params);
+    },
+    tableCorpDept(corpId,deptId){
+         return HTTP.get('corp/' + corpId + '/' + deptId + '/deptEmployee')
+    },
+    deleteDept(corpID,deptID){
+        return HTTP.delete('corp/' + corpID +'/dept/'+deptID)
+    },
+    updateDept(params) {
+        return HTTP.put('corp/' + params.corp_id + '/dept/' + params.id,{
+            params
+        })
     }
 }
